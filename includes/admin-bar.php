@@ -31,6 +31,11 @@ class EDD_DT_Admin_Bar {
 	}
 
 	public function blog_id( $wp_admin_bar ) {
+
+		if ( ! is_multisite() ) {
+			return;
+		}
+
 		$args = array(
 			'id'    => 'blog_id',
 			'title' => 'Blog #' . get_current_blog_id(),
