@@ -4,6 +4,6 @@ This plugin is for development use only, not for production sites. It's a collec
 
 Current Items added:
 
-1) Empty cart item in Admin Bar
-2) Blog ID in admin bar (for multisite)
+- Empty cart item in Admin Bar
+- Blog ID in admin bar (for multisite)
 
