@@ -24,7 +24,6 @@ class EDD_Dev_Tools {
 	private function __construct() {
 		$this->constants();
 		$this->includes();
-		$this->scripts();
 		$this->hooks();
 		$this->filters();
 	}
@@ -66,17 +65,24 @@ class EDD_Dev_Tools {
 	private function includes() {
 
 		include_once EDD_DT_PLUGIN_DIR . 'includes/admin-bar.php';
+		include_once EDD_DT_PLUGIN_DIR . 'includes/toggle-bar.php';
 
 	}
 
-	private function scripts() {}
+	private function hooks() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 
-	private function hooks() {}
+	}
 
 	private function filters() {}
 
 	public function register_settings() {}
 
+	public function scripts() {
+		wp_register_style( 'edd-dev-tools', EDD_DT_PLUGIN_URL . 'assets/styles.css', array(), EDD_DT_VERSION );
+		wp_enqueue_style( 'edd-dev-tools' );
+	}
 
 	function setting_section_callback() {}
 
