@@ -48,17 +48,4 @@
 	/* float: left; */
 	position: relative;
 	white-space: normal;
-	width: 33%;
-}
-
-@media only screen and (min-width: 1024px) {
-	#wpadminbar .quicklinks #wp-admin-bar-edd-toggle.has-many .ab-submenu li {
-		width: 25%;
-	}
-}
-
-@media only screen and (min-width: 1280px) {
-	#wpadminbar .quicklinks #wp-admin-bar-edd-toggle.has-many .ab-submenu li {
-		width: 20%;
-	}
 }
