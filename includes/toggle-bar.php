@@ -59,9 +59,9 @@ class EDD_DT_Toggle_Bar {
 			$settings = edd_get_registered_settings();
 		}
 
-		$header  = '';
-		$headers = array();
-		$to_add  = array();
+		$header          = '';
+		$headers         = array();
+		$to_add          = array();
 
 		foreach ( $settings as $key => $setting ) {
 
@@ -78,17 +78,26 @@ class EDD_DT_Toggle_Bar {
 			}
 
 			if ( $type === 'header' ) {
-				$headers[] = $setting;
-				$header    = $setting['id'];
+				$headers[]    = $setting;
+				$header       = $setting['id'];
+				$found_header = true;
 			} else {
+
+				if ( empty( $header ) ) {
+					$header = $key;
+					$name   = ucwords( str_replace( '_', ' ', $header ) );
+					$headers[] = array( 'id' => $header, 'name' => $name );
+				}
+
 				$to_add[ $header ][] = $setting;
+
 			}
 		}
 
 		if ( ! empty( $headers ) ) {
 
 			// Itterate through the headers we found
-			foreach ( $headers as $header ) {
+			foreach ( $headers as $key => $header ) {
 
 				// If this header has subitems, add it and it's settings
 				if ( ! empty( $to_add[ $header['id'] ] ) ) {
