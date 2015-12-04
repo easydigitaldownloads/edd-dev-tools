@@ -22,6 +22,10 @@ class EDD_Dev_Tools {
 	private static $instance;
 
 	private function __construct() {
+		if ( ! class_exists( 'Easy_Digital_Downloads' ) ){
+			return;
+		}
+
 		$this->constants();
 		$this->includes();
 		$this->hooks();
@@ -94,4 +98,4 @@ class EDD_Dev_Tools {
 function edd_load_dev_tools() {
 	return EDD_Dev_Tools::instance();
 }
-add_action( 'plugins_loaded', 'edd_load_dev_tools' );
+add_action( 'plugins_loaded', 'edd_load_dev_tools', PHP_INT_MAX );
