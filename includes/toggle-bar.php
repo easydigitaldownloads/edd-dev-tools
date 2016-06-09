@@ -104,8 +104,9 @@ class EDD_DT_Toggle_Bar {
 
 				if ( empty( $header ) ) {
 					$header = $key;
-					$name   = ucwords( str_replace( '_', ' ', $header ) );
-					$headers[] = array( 'id' => $header, 'name' => $name );
+					$name   = str_replace( '_', ' ', $header );
+					$name   = str_replace( '-', ' ', $name );
+					$headers[] = array( 'id' => $header, 'name' => ucwords( $name ) );
 				}
 
 				$to_add[ $header ][] = $setting;
