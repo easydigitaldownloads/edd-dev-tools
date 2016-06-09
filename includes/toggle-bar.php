@@ -50,13 +50,33 @@ class EDD_DT_Toggle_Bar {
 		);
 		$this->admin_bar->add_node( $args );
 
+		$this->header_locations = array();
+
+		$settings         = edd_get_registered_settings();
+		$tabs             = array_keys( $settings );
+		$header_locations = array();
+
+		// Hang on tight, it's about to get ugly
+		foreach ( $tabs as $tab_key => $tab ) {
+			foreach ( $settings[ $tab ] as $section_key => $section ) {
+				foreach ( $section as $setting_id => $setting ) {
+					if ( isset( $setting['type'] ) && 'header' == $setting['type'] ) {
+						$this->header_locations[ $setting['id'] ] = array (
+							'tab'     => $tab,
+							'section' => $section_key,
+						);
+					}
+				}
+			}
+		}
+
 		$this->add_sub_items();
 	}
 
 	public function add_sub_items( $settings = false ) {
 
 		if ( false === $settings ) {
-			$settings = edd_get_registered_settings();
+			$settings         = edd_get_registered_settings();
 		}
 
 		$header          = '';
@@ -80,7 +100,6 @@ class EDD_DT_Toggle_Bar {
 			if ( $type === 'header' ) {
 				$headers[]    = $setting;
 				$header       = $setting['id'];
-				$found_header = true;
 			} else {
 
 				if ( empty( $header ) ) {
@@ -101,7 +120,9 @@ class EDD_DT_Toggle_Bar {
 
 				// If this header has subitems, add it and it's settings
 				if ( ! empty( $to_add[ $header['id'] ] ) ) {
-					$this->add_heading( $header );
+					$location = ! empty( $this->header_locations[ $header['id'] ] ) ? $this->header_locations[ $header['id'] ] : false;
+
+					$this->add_heading( $header, $location );
 
 					foreach ( $to_add[ $header['id'] ] as $item ) {
 						$this->add_sub_item( $item );
@@ -113,7 +134,7 @@ class EDD_DT_Toggle_Bar {
 		}
 	}
 
-	public function add_heading( $item ) {
+	public function add_heading( $item, $location = false ) {
 		$args = array(
 			'id'     => 'edd-toggle_' . $item['id'] . '_header',
 			'title'  => strip_tags( $item['name'] ),
@@ -123,6 +144,16 @@ class EDD_DT_Toggle_Bar {
 				'title' => strip_tags( $item['name'] ),
 			),
 		);
+
+		if ( ! empty( $location ) ) {
+			$base_url = admin_url( 'edit.php?post_type=download&page=edd-settings' );
+			$query_args = array(
+				'tab'     => $location['tab'],
+				'section' => $location['section'],
+			);
+
+			$args['href'] = add_query_arg( $query_args, $base_url );
+		}
 
 		$this->admin_bar->add_node( $args );
 	}
