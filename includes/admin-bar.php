@@ -25,10 +25,12 @@ class EDD_DT_Admin_Bar {
 		add_action( 'admin_bar_menu', array( $this, 'blog_id' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'empty_cart' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'delete_licenses' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'clear_jilt' ), 999 );
 
 		// Capture actions from links added to the menu bar, if needed
 		add_action( 'init', array( $this, 'process_empty_cart' ) );
 		add_action( 'init', array( $this, 'process_delete_licenses' ) );
+		add_action( 'init', array( $this, 'process_clear_jilt' ) );
 	}
 
 	public function blog_id( $wp_admin_bar ) {
@@ -101,6 +103,34 @@ class EDD_DT_Admin_Bar {
 		}
 	}
 
+	public function clear_jilt( $wp_admin_bar ) {
+		if ( function_exists( 'edd_jilt' ) ) {
+			$title = __( 'Clear Jilt', 'edd-dev-tools' );
+
+			$args  = array(
+				'id'    => 'edd_clear_jilt',
+				'title' => $title,
+				'href'  => add_query_arg( 'clear_jilt', true ),
+			);
+			$wp_admin_bar->add_node( $args );
+		}
+	}
+
+	public function process_clear_jilt() {
+		if ( isset( $_GET['clear_jilt'] ) ) {
+			if ( $_GET['clear_jilt'] == '1' ) {
+				delete_user_meta( get_current_user_id(), '_edd_jilt_cart_token' );
+				delete_user_meta( get_current_user_id(), '_edd_jilt_order_id' );
+				delete_user_meta( get_current_user_id(), '_edd_jilt_pending_recovery' );
+				EDD()->session->set( 'edd_jilt_order_id', '' );
+				EDD()->session->set( 'edd_jilt_cart_token', '' );
+				EDD()->session->set( '_edd_jilt_pending_recovery', '' );
+
+				wp_redirect( remove_query_arg( 'clear_jilt' ) );
+				exit;
+			}
+		}
+	}
 }
 
 EDD_DT_Admin_Bar::instance();
