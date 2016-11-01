@@ -29,6 +29,9 @@ class EDD_DT_Payments {
 	}
 
 	public function payment_post_meta( $payment_id ) {
+	ini_set( 'xdebug.var_display_max_depth', 5 );
+	ini_set( 'xdebug.var_display_max_children', 256 );
+	ini_set( 'xdebug.var_display_max_data', 1024 );
 ?>
 <div id="edd-payment-meta" class="postbox">
 	<h3 class="hndle"><?php _e( 'Payment Postmeta Items', 'edd-dev-tools' ); ?></h3>
