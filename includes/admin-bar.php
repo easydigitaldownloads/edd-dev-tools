@@ -23,6 +23,7 @@ class EDD_DT_Admin_Bar {
 	private function hooks() {
 		// Add items to the admin bar
 		add_action( 'admin_bar_menu', array( $this, 'blog_id' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'git_branch' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'empty_cart' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'delete_licenses' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'clear_jilt' ), 999 );
@@ -42,6 +43,24 @@ class EDD_DT_Admin_Bar {
 		$args = array(
 			'id'    => 'blog_id',
 			'title' => 'Blog #' . get_current_blog_id(),
+		);
+		$wp_admin_bar->add_node( $args );
+	}
+
+	public function git_branch( $wp_admin_bar ) {
+
+		$git_info = @file( EDD_PLUGIN_DIR . '/.git/HEAD', FILE_USE_INCLUDE_PATH );
+		if ( ! $git_info ) {
+			return;
+		}
+
+		$first_line    = $git_info[ 0 ];
+		$branch_string = explode( '/', $first_line, 3 );
+		$branch        = $branch_string[ 2 ];
+
+		$args = array(
+			'id'    => 'edd_branch',
+			'title' => $branch,
 		);
 		$wp_admin_bar->add_node( $args );
 	}
