@@ -60,7 +60,7 @@ class EDD_DT_Admin_Bar {
 
 		$args = array(
 			'id'    => 'edd_branch',
-			'title' => $branch,
+			'title' => sprintf( '<span class="ab-icon"></span> <span class="ab-label">%s</span>', $branch ),
 		);
 		$wp_admin_bar->add_node( $args );
 	}
@@ -74,9 +74,10 @@ class EDD_DT_Admin_Bar {
 		}
 
 		$args  = array(
-			'id'    => 'edd_empty_cart',
-			'title' => $title,
-			'href'  => add_query_arg( 'empty_cart', true ),
+			'id'     => 'edd_empty_cart',
+			'title'  => $title,
+			'href'   => add_query_arg( 'empty_cart', true ),
+			'parent' => 'edd_branch',
 		);
 		$wp_admin_bar->add_node( $args );
 	}
@@ -97,9 +98,10 @@ class EDD_DT_Admin_Bar {
 			$title = __( 'Delete Licenses', 'edd-dev-tools' );
 
 			$args  = array(
-				'id'    => 'edd_delete_licenses',
-				'title' => $title,
-				'href'  => add_query_arg( 'delete_licenses', true ),
+				'id'     => 'edd_delete_licenses',
+				'title'  => $title,
+				'href'   => add_query_arg( 'delete_licenses', true ),
+				'parent' => 'edd_branch',
 			);
 			$wp_admin_bar->add_node( $args );
 		}
@@ -127,9 +129,10 @@ class EDD_DT_Admin_Bar {
 			$title = __( 'Clear Jilt', 'edd-dev-tools' );
 
 			$args  = array(
-				'id'    => 'edd_clear_jilt',
-				'title' => $title,
-				'href'  => add_query_arg( 'clear_jilt', true ),
+				'id'     => 'edd_clear_jilt',
+				'title'  => $title,
+				'href'   => add_query_arg( 'clear_jilt', true ),
+				'parent' => 'edd_branch',
 			);
 			$wp_admin_bar->add_node( $args );
 		}

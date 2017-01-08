@@ -1,3 +1,8 @@
+#wpadminbar .quicklinks #wp-admin-bar-edd_branch .ab-item .ab-icon:before {
+	content: "\f316";
+	top: 2px;
+}
+
 #wpadminbar .quicklinks #wp-admin-bar-edd-toggle .ab-item .ab-icon:before {
 	content: "\f108";
 	top: 2px;
