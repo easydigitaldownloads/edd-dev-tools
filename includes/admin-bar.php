@@ -160,7 +160,8 @@ class EDD_DT_Admin_Bar {
 			return;
 		}
 
-		$payment = edd_get_payment_by( 'key', $_GET['payment_key'] );
+		global $edd_receipt_args;
+		$payment   = new EDD_Payment( $edd_receipt_args['id'] );
 
 		if ( empty( $payment->ID ) ) {
 			return;
