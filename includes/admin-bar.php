@@ -27,6 +27,7 @@ class EDD_DT_Admin_Bar {
 		add_action( 'admin_bar_menu', array( $this, 'empty_cart' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'delete_licenses' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'clear_jilt' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'view_payment' ), 999 );
 
 		// Capture actions from links added to the menu bar, if needed
 		add_action( 'init', array( $this, 'process_empty_cart' ) );
@@ -152,6 +153,28 @@ class EDD_DT_Admin_Bar {
 				exit;
 			}
 		}
+	}
+
+	public function view_payment( $wp_admin_bar ) {
+		if ( ! edd_is_success_page() ) {
+			return;
+		}
+
+		$payment = edd_get_payment_by( 'key', $_GET['payment_key'] );
+
+		if ( empty( $payment->ID ) ) {
+			return;
+		}
+
+		$title = __( 'View Payment', 'edd-dev-tools' );
+
+		$args  = array(
+			'id'     => 'edd_view_payment',
+			'title'  => $title,
+			'href'   => admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $payment->ID ),
+			'parent' => 'edd_branch',
+		);
+		$wp_admin_bar->add_node( $args );
 	}
 }
 
