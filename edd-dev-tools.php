@@ -71,6 +71,7 @@ class EDD_Dev_Tools {
 		include_once EDD_DT_PLUGIN_DIR . 'includes/admin-bar.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/toggle-bar.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/payments.php';
+		include_once EDD_DT_PLUGIN_DIR . 'includes/customers.php';
 
 	}
 
@@ -91,12 +92,35 @@ class EDD_Dev_Tools {
 
 	function setting_section_callback() {}
 
+	function print_pre( $expression, $return = false, $wrap = false ) {
+		$css = 'border:1px solid #e1e1e1;background:#fcfcfc;padding:1em;text-align:left;';
+		if ( $wrap ) {
+			$str = '<p style="' . $css . '"><tt>' . str_replace(
+					array( '  ', "\n" ), array( '&nbsp; ', '<br />' ),
+					htmlspecialchars( print_r( $expression, true ) )
+				) . '</tt></p>';
+		} else {
+			$str = '<pre style="' . $css . '">'
+			       . htmlspecialchars( print_r( $expression, true ) ) . '</pre>';
+		}
+		if ( $return ) {
+			if ( is_string( $return ) && $fh = fopen( $return, 'a' ) ) {
+				fwrite( $fh, $str );
+				fclose( $fh );
+			}
+
+			return $str;
+		} else {
+			echo $str;
+		}
+	}
+
 
 } // End WP_CodeShare class
 
 } // End Class Exists check
 
-function edd_load_dev_tools() {
+function edd_dev_tools() {
 	return EDD_Dev_Tools::instance();
 }
-add_action( 'plugins_loaded', 'edd_load_dev_tools', PHP_INT_MAX );
+add_action( 'plugins_loaded', 'edd_dev_tools', PHP_INT_MAX );
