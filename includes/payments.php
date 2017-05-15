@@ -29,31 +29,68 @@ class EDD_DT_Payments {
 	}
 
 	public function payment_post_meta( $payment_id ) {
-	ini_set( 'xdebug.var_display_max_depth', 5 );
-	ini_set( 'xdebug.var_display_max_children', 256 );
-	ini_set( 'xdebug.var_display_max_data', 1024 );
-?>
-<div id="edd-payment-meta" class="postbox">
-	<h3 class="hndle"><?php _e( 'Payment Postmeta Items', 'edd-dev-tools' ); ?></h3>
-	<div class="inside">
-		<div style="overlfow:auto">
-		<?php $post_meta = get_metadata( 'post', $payment_id ); ?>
-			<pre style="overflow: auto;word-wrap: break-word;">
-			<?php
-			foreach ( $post_meta as $key => $value ) {
-				if ( is_serialized( $value[0] ) ) {
-					echo $key . '=> ';
-					var_dump( unserialize( $value[0] ) );
-				} else {
-					echo $key . ' => ' . $value[0] . "\n";
-				}
-			}
-			?>
-			</pre>
+		global $wpdb;
+
+		ini_set( 'xdebug.var_display_max_depth', 5 );
+		ini_set( 'xdebug.var_display_max_children', 256 );
+		ini_set( 'xdebug.var_display_max_data', 1024 );
+		?>
+		<div id="edd-payment-meta" class="postbox">
+			<h3 class="hndle"><?php _e( 'Payment Postmeta Items', 'edd-dev-tools' ); ?></h3>
+			<div class="inside">
+				<?php
+				$meta_sql     = "SELECT meta_id, meta_key, meta_value FROM {$wpdb->prefix}postmeta WHERE post_id = $payment_id";
+				$payment_meta = $wpdb->get_results( $meta_sql );
+				?>
+				<div>
+					<table class="wp-list-table widefat striped downloads">
+						<thead>
+							<tr>
+								<th><?php _e( 'ID', 'edd-dev-tools' ); ?></th>
+								<th><?php _e( 'Key', 'edd-dev-tools' ); ?></th>
+								<th><?php _e( 'Value', 'edd-dev-tools' ); ?></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th><?php _e( 'ID', 'edd-dev-tools' ); ?></th>
+								<th><?php _e( 'Key', 'edd-dev-tools' ); ?></th>
+								<th><?php _e( 'Value', 'edd-dev-tools' ); ?></th>
+							</tr>
+						</tfoot>
+						<tbody>
+							<?php if ( ! empty( $payment_meta ) ) : ?>
+								<?php foreach ( $payment_meta as $meta ) : ?>
+									<tr>
+										<td><?php echo $meta->meta_id; ?></td>
+										<td><?php echo $meta->meta_key; ?></td>
+										<td>
+
+												<?php
+												if ( is_serialized( $meta->meta_value ) ) {
+													_e( 'Serialized Data', 'edd-dev-tools' );
+													?>
+													<span class="dashicons dashicons-visibility" title="<?php echo esc_attr( $meta->meta_value ); ?>"></span>
+													<p>
+														<?php edd_dev_tools()->print_pre( unserialize( $meta->meta_value ) ); ?>
+													</p>
+													<?php
+												} else {
+													?><code><?php echo $meta->meta_value; ?></code><?php
+												}
+												?>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							<?php else: ?>
+								<tr><td colspan="3"><?php printf( __( 'No Customer Meta Found', 'edd-dev-tools' ), edd_get_label_plural() ); ?></td></tr>
+							<?php endif; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
-<?php
+		<?php
 	}
 
 }
