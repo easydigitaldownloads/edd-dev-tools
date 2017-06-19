@@ -81,7 +81,10 @@ class EDD_Dev_Tools {
 
 	}
 
-	private function filters() {}
+	private function filters() {
+		// Allow the generation of self commissions
+		add_filter( 'eddc_should_allow_self_commissions', '__return_true' );
+	}
 
 	public function register_settings() {}
 
