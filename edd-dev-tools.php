@@ -71,6 +71,7 @@ class EDD_Dev_Tools {
 		include_once EDD_DT_PLUGIN_DIR . 'includes/admin-bar.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/toggle-bar.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/payments.php';
+		include_once EDD_DT_PLUGIN_DIR . 'includes/downloads.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/customers.php';
 
 	}
