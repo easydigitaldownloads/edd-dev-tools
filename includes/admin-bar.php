@@ -57,7 +57,7 @@ class EDD_DT_Admin_Bar {
 
 		$first_line    = $git_info[ 0 ];
 		$branch_string = explode( '/', $first_line, 3 );
-		$branch        = $branch_string[ 2 ];
+		$branch        = isset( $branch_string[2] ) ? $branch_string[2] : substr( $branch_string[0], 0, 7);
 
 		$args = array(
 			'id'    => 'edd_branch',
