@@ -29,6 +29,7 @@ class EDD_DT_Admin_Bar {
 		add_action( 'admin_bar_menu', array( $this, 'clear_jilt' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'view_payment' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'test_mode' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'is_checkout' ), 999 );
 
 		// Capture actions from links added to the menu bar, if needed
 		add_action( 'init', array( $this, 'process_empty_cart' ) );
@@ -190,6 +191,21 @@ class EDD_DT_Admin_Bar {
 			'id'     => 'edd_test_mode',
 			'title'  => $title,
 			'href'   => add_query_arg( 'edd_toggle_setting', 'test_mode' ),
+			'parent' => 'edd_branch',
+		);
+		$wp_admin_bar->add_node( $args );
+	}
+
+	public function is_checkout( $wp_admin_bar ) {
+		if ( edd_is_checkout() ) {
+			$title = '<span style="color: #33FF00">Is Checkout</span>';
+		} else {
+			$title = '<span style="color: #FF3333">Not Checkout</span>';
+		}
+
+		$args  = array(
+			'id'     => 'edd_is_checkout',
+			'title'  => $title,
 			'parent' => 'edd_branch',
 		);
 		$wp_admin_bar->add_node( $args );
