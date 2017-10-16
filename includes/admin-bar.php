@@ -53,13 +53,13 @@ class EDD_DT_Admin_Bar {
 	public function git_branch( $wp_admin_bar ) {
 
 		$git_info = @file( EDD_PLUGIN_DIR . '/.git/HEAD', FILE_USE_INCLUDE_PATH );
-		if ( ! $git_info ) {
-			return;
+		if ( $git_info ) {
+			$first_line    = $git_info[ 0 ];
+			$branch_string = explode( '/', $first_line, 3 );
+			$branch        = isset( $branch_string[ 2 ] ) ? $branch_string[ 2 ] : substr( $branch_string[ 0 ], 0, 7 );
+		} else {
+			$branch = 'EDD v' . EDD_VERSION;
 		}
-
-		$first_line    = $git_info[ 0 ];
-		$branch_string = explode( '/', $first_line, 3 );
-		$branch        = isset( $branch_string[2] ) ? $branch_string[2] : substr( $branch_string[0], 0, 7);
 
 		$args = array(
 			'id'    => 'edd_branch',
