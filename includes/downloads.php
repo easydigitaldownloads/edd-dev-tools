@@ -26,7 +26,6 @@ class EDD_DT_Downloads {
 
 	private function hooks() {
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_boxes' ) );
-		add_action( 'edd_view_order_details_main_after', array( $this, 'payment_post_meta' ), 99, 1 );
 	}
 
 	public function register_meta_boxes() {
