@@ -9,10 +9,6 @@ class EDD_DT_Checkout {
 	private static $instance;
 
 	private function __construct() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
 		$this->hooks();
 	}
 
