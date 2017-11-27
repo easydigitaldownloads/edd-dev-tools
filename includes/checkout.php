@@ -25,6 +25,8 @@ class EDD_DT_Checkout {
 	}
 
 	public function display_checkout_cart_details( $item, $key ) {
+		$cart_details = EDD()->cart->get_contents_details();
+		$item         = $cart_details[ $key ];
 		ini_set( 'xdebug.var_display_max_depth', 5 );
 		ini_set( 'xdebug.var_display_max_children', 256 );
 		ini_set( 'xdebug.var_display_max_data', 1024 );
