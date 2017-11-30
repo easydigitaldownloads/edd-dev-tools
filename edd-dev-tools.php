@@ -74,6 +74,7 @@ class EDD_Dev_Tools {
 		include_once EDD_DT_PLUGIN_DIR . 'includes/downloads.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/customers.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/checkout.php';
+		include_once EDD_DT_PLUGIN_DIR . 'includes/licenses.php';
 
 	}
 
