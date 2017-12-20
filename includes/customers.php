@@ -25,8 +25,25 @@ class EDD_DT_Customers {
 	}
 
 	private function hooks() {
+		add_action( 'edd_after_customer_edit_link', array( $this, 'switch_to_user' ), 10, 1 );
 		add_filter( 'edd_customer_tabs', array( $this, 'register_tab' ), 999, 1 );
 		add_filter( 'edd_customer_views', array( $this, 'register_view' ), 10, 1 );
+	}
+
+	public function switch_to_user( $customer ) {
+		if ( ! class_exists( 'user_switching' ) ) {
+			return;
+		}
+
+		if ( $customer->user_id < 1 ) {
+			return;
+		}
+
+		$user = new WP_User( $customer->user_id );
+
+		$link = user_switching::maybe_switch_url( $user );
+
+		echo '<a class="button secondary" href="' . $link . '">' . __( 'Switch to User', 'edd-dev-tools' ) . '</a>';
 	}
 
 	public function register_tab( $tabs ) {
