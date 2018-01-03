@@ -27,7 +27,7 @@ class EDD_DT_Licenses {
 	public function admin_link_license_keys_template( $license_id ) {
 		?>
 		<br />
-		<a target="_blank" href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license=' . $license_id ); ?>">View In Admin</a>
+		<a target="_blank" href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license_id=' . $license_id ); ?>">View In Admin</a>
 		<?php
 	}
 
