@@ -28,6 +28,8 @@ class EDD_DT_Customers {
 		add_action( 'edd_after_customer_edit_link', array( $this, 'switch_to_user' ), 10, 1 );
 		add_filter( 'edd_customer_tabs', array( $this, 'register_tab' ), 999, 1 );
 		add_filter( 'edd_customer_views', array( $this, 'register_view' ), 10, 1 );
+		add_filter( 'edd_customers_table_top', array( $this, 'add_clear_verification_button' ) );
+		add_action( 'edd_dt_verify_all', array( $this, 'process_verify_all' ) );
 	}
 
 	public function switch_to_user( $customer ) {
@@ -121,6 +123,26 @@ class EDD_DT_Customers {
 		</div>
 
 		<?php
+	}
+
+	public function add_clear_verification_button() {
+		global $wpdb;
+		$has_pending_users = $wpdb->get_results( "SELECT meta_value FROM $wpdb->usermeta WHERE meta_key = '_edd_pending_verification' LIMIT 1" );
+
+		if ( ! empty( $has_pending_users ) ) {
+			echo '<a class="button secondary" href="' . add_query_arg( array( 'edd_action' => 'dt_verify_all' ) ) . '">' . __( 'Verify All Users', 'edd-dev-tools' ) . '</a>';
+		}
+	}
+
+	public function process_verify_all() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		global $wpdb;
+		$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => '_edd_pending_verification' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=download&page=edd-customers' ) );
+		exit;
 	}
 
 }
