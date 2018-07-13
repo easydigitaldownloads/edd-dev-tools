@@ -63,7 +63,7 @@ class EDD_DT_Customers {
 		ini_set( 'xdebug.var_display_max_depth', 5 );
 		ini_set( 'xdebug.var_display_max_children', 256 );
 		ini_set( 'xdebug.var_display_max_data', 1024 );
-		$meta_sql      = "SELECT meta_id, meta_key, meta_value FROM {$wpdb->prefix}edd_customermeta WHERE customer_id = $customer->id";
+		$meta_sql      = "SELECT meta_id, meta_key, meta_value FROM {$wpdb->prefix}edd_customermeta WHERE edd_customer_id = $customer->id";
 		$customer_meta = $wpdb->get_results( $meta_sql );
 		?>
 
