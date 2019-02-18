@@ -83,35 +83,39 @@ class EDD_DT_Toggle_Bar {
 		$headers         = array();
 		$to_add          = array();
 
-		foreach ( $settings as $key => $setting ) {
+		if( ! empty( $settings ) && is_array( $settings ) ) {
 
-			$type = isset( $setting['type'] ) ? $setting['type'] : false;
+			foreach ( $settings as $key => $setting ) {
 
-			// This item isn't a setting but a parent array, check it's sub arrays
-			if ( false === $type ) {
-				$this->add_sub_items( $setting );
-			}
+				$type = isset( $setting['type'] ) ? $setting['type'] : false;
 
-			$allowed_types = array( 'checkbox', 'header' );
-			if ( false === $type || ! in_array( $type, $allowed_types ) ) {
-				continue;
-			}
-
-			if ( $type === 'header' ) {
-				$headers[]    = $setting;
-				$header       = $setting['id'];
-			} else {
-
-				if ( empty( $header ) ) {
-					$header = $key;
-					$name   = str_replace( '_', ' ', $header );
-					$name   = str_replace( '-', ' ', $name );
-					$headers[] = array( 'id' => $header, 'name' => ucwords( $name ) );
+				// This item isn't a setting but a parent array, check it's sub arrays
+				if ( false === $type ) {
+					$this->add_sub_items( $setting );
 				}
 
-				$to_add[ $header ][] = $setting;
+				$allowed_types = array( 'checkbox', 'header' );
+				if ( false === $type || ! in_array( $type, $allowed_types ) ) {
+					continue;
+				}
 
+				if ( $type === 'header' ) {
+					$headers[]    = $setting;
+					$header       = $setting['id'];
+				} else {
+
+					if ( empty( $header ) ) {
+						$header = $key;
+						$name   = str_replace( '_', ' ', $header );
+						$name   = str_replace( '-', ' ', $name );
+						$headers[] = array( 'id' => $header, 'name' => ucwords( $name ) );
+					}
+
+					$to_add[ $header ][] = $setting;
+
+				}
 			}
+
 		}
 
 		if ( ! empty( $headers ) ) {
