@@ -75,6 +75,7 @@ class EDD_Dev_Tools {
 		include_once EDD_DT_PLUGIN_DIR . 'includes/customers.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/checkout.php';
 		include_once EDD_DT_PLUGIN_DIR . 'includes/licenses.php';
+		include_once EDD_DT_PLUGIN_DIR . 'includes/non-edd-post-types.php';
 
 	}
 
@@ -87,6 +88,9 @@ class EDD_Dev_Tools {
 	private function filters() {
 		// Allow the generation of self commissions
 		add_filter( 'eddc_should_allow_self_commissions', '__return_true' );
+
+		add_filter( 'script_loader_src', array( $this, 'no_cache_version'), 15, 1 );
+		add_filter( 'style_loader_src', array( $this, 'no_cache_version'), 15, 1 );
 	}
 
 	public function register_settings() {}
@@ -119,6 +123,19 @@ class EDD_Dev_Tools {
 		} else {
 			echo $str;
 		}
+	}
+
+	public function no_cache_version( $src ) {
+		static $time;
+
+		if ( is_null( $time ) ) {
+			$time = time();
+		}
+
+		$src = remove_query_arg( 'ver', $src );
+		$src = add_query_arg( 'ver', $time, $src );
+
+		return $src;
 	}
 
 
